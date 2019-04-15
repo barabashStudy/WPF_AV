@@ -1,0 +1,28 @@
+﻿<Window x:Class="WpfAV.add_sign"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfAV"
+        mc:Ignorable="d"
+        Title="add_sign" Height="299" Width="494">
+    <Grid>
+        <Label Content="Путь к файлу:" HorizontalAlignment="Left" Margin="17,14,0,0" Width="114" HorizontalContentAlignment="Right" Height="25" VerticalAlignment="Top"/>
+        <Label Content="Начало сигнатуры:" HorizontalAlignment="Left" Margin="17,44,0,0" Width="114" HorizontalContentAlignment="Right" Height="25" VerticalAlignment="Top"/>
+        <Label Content="Длина сигнатуры:" HorizontalAlignment="Left" Margin="17,74,0,0" Width="114" HorizontalContentAlignment="Right" Height="25" VerticalAlignment="Top"/>
+        <Label Content="Имя вируса:" HorizontalAlignment="Left" Margin="17,104,0,0" Width="114" HorizontalContentAlignment="Right" Height="25" VerticalAlignment="Top"/>
+        <Label Content="Начало смещения:" HorizontalAlignment="Left" Margin="17,134,0,0" Width="114" HorizontalContentAlignment="Right" Height="25" VerticalAlignment="Top"/>
+        <Label Content="Конец смещения:" HorizontalAlignment="Left" Margin="17,164,0,0" Width="114" HorizontalContentAlignment="Right" Height="25" VerticalAlignment="Top"/>
+        <Label Content="Тип файла:" HorizontalAlignment="Left" Margin="17,194,0,0" Width="114" HorizontalContentAlignment="Right" Height="25" VerticalAlignment="Top"/>
+        <TextBox x:Name="textBox_signaturePath" HorizontalAlignment="Left" Height="25" Margin="136,14,0,0" VerticalAlignment="Top" Width="241" AcceptsReturn="True" FontSize="14"/>
+        <TextBox x:Name="textBox_signatureBegin" HorizontalAlignment="Left" Height="25" Margin="136,44,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="241" FontSize="14" TextChanged="textBox_signatureBegin_TextChanged"/>
+        <TextBox x:Name="textBox_signatureLength" HorizontalAlignment="Left" Height="25" Margin="136,74,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="241" FontSize="14" TextChanged="TextBox_TextChanged_1"/>
+        <TextBox x:Name="textBox_name" HorizontalAlignment="Left" Height="25" Margin="136,104,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="241" FontSize="14"/>
+        <TextBox x:Name="textBox_offsetStart" HorizontalAlignment="Left" Height="25" Margin="136,134,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="241" FontSize="14"/>
+        <TextBox x:Name="textBox_offsetEnd" HorizontalAlignment="Left" Height="25" Margin="136,164,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="241" FontSize="14"/>
+        <TextBox x:Name="textBox_fileType" HorizontalAlignment="Left" Height="25" Margin="136,194,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="241" FontSize="14" TextChanged="TextBox_TextChanged"/>
+        <Button Content="Обзор" HorizontalAlignment="Left" Margin="382,14,0,0" VerticalAlignment="Top" Width="75" Height="26" Click="Button_Click"/>
+        <Button Content="Добавить" HorizontalAlignment="Left" Margin="302,224,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
+
+    </Grid>
+</Window>

@@ -1,0 +1,17 @@
+﻿<Window x:Class="WpfAV.add_base"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfAV"
+        mc:Ignorable="d"
+        Title="add_base" Height="450" Width="800" Loaded="Window_Loaded">
+    <Grid>
+        <Label Content="Путь к файлу:" HorizontalAlignment="Left" Margin="15,10,0,0" VerticalAlignment="Top" Width="85" HorizontalContentAlignment="Right"/>
+        <TextBox x:Name="TB_filePath" Height="26" Margin="105,10,135,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" TextChanged="TextBox_TextChanged" FontSize="14" FontWeight="Bold"/>
+        <Button Content="Обзор" Margin="0,10,18,0" VerticalAlignment="Top" Height="26" Click="Button_Click" HorizontalAlignment="Right" Width="112"/>
+        <Label Content="Содержимое файла:" HorizontalAlignment="Left" Margin="10,51,0,0" VerticalAlignment="Top" Width="194"/>
+        <ListBox x:Name="listBox1" Margin="10,82,10,10" SelectionChanged="ListBox_SelectionChanged"/>
+
+    </Grid>
+</Window>

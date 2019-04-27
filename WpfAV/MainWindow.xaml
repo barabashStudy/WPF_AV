@@ -21,7 +21,7 @@
         </DataGrid>
         <Label Content="Обнаруженные вирусы:" Margin="10,50,553,0" VerticalAlignment="Top"/>
         <ListBox x:Name="LB2" HorizontalAlignment="Left" Height="164" Margin="83,129,0,0" VerticalAlignment="Top" Width="625"/>
-        <Button Content="scan fold" HorizontalAlignment="Left" Margin="316,50,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <Button Content="scan fold" HorizontalAlignment="Left" Margin="297,57,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
 
     </Grid>
 </Window>

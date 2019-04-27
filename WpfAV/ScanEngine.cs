@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
-
+using System.IO;
 
 namespace WpfAV
 {
     /// <summary>
-    ///  класс для сканирования объектов ScanObject
+    ///  класс для сканирования объектов scanObject1
     ///  (подписчик и отправитель(вирусИнфо)
     /// </summary>
-    class ScanEngine : IObserver<ScanObject>, IObservable<VirusInfo>    //подписчик объекта //+отправитель инфы о вирусе
+    class ScanEngine : IObserver<ScanObject1>, IObservable<VirusInfo>    //подписчик объекта //+отправитель инфы о вирусе
     {
         private List<RecordsDictionary> AVBases;
         private List<IObserver<VirusInfo>> observers;
@@ -43,21 +43,48 @@ namespace WpfAV
             throw new NotImplementedException();
         }
 
-        public void OnNext(ScanObject value)
+        public void OnNext(ScanObject1 value)
         {
             Scan(value);
         }
 
-        public void Scan(ScanObject scanObject)
+        public void Scan(ScanObject1 scanObject1)
         {
-            if (scanObject != null)
+
+            //BinaryReader reader = new BinaryReader(File.Open(@"C:\Users\saske\Desktop\scanTest\Viber.exe", FileMode.Open));
+            //reader.BaseStream.Position = 0;
+
+
+            //byte[] text1;
+            //byte[] buffer = new byte[16 * 1024];
+            //using (MemoryStream ms = new MemoryStream())
+            //{
+            //    int read;
+            //    while ((read = reader.Read(buffer, 0, buffer.Length)) > 0)
+            //    {
+            //        ms.Write(buffer, 0, read);
+            //    }
+            //    text1 = ms.ToArray();
+            //}
+
+            int s = 0;
+
+
+            if (scanObject1 != null)
             {
                 byte[] firstBytes = new byte[4];
-                long lenght = scanObject.Lenght;
+                long lenght = scanObject1.Lenght;
+                //long lenght = text1.Length;
+
                 int offset = 0;
                 do
                 {
-                    firstBytes = scanObject.GetBytes(offset, 4);
+                    //firstBytes[0] = text1[0];
+                    //firstBytes[1] = text1[1];
+                    //firstBytes[2] = text1[2];
+                    //firstBytes[3] = text1[3];
+
+                    firstBytes = scanObject1.GetBytes(offset, 4);
                     foreach (RecordsDictionary avBase in AVBases)
                     {
                         if (avBase.ContainsKey(firstBytes))
@@ -66,16 +93,27 @@ namespace WpfAV
                             for (int i = 0; i < countRecords; i++)
                             {
                                 AVRecord record = avBase.GetRecord(firstBytes, i);
-                                //if ((offset >= record.OffsetStart) && (offset <= record.OffsetEnd))
+                                if ((offset >= record.OffsetStart) && (offset <= record.OffsetEnd))
                                 {
-                                    byte[] hash = GetHash(scanObject.GetBytes(offset, (int)record.Lenght));
+
+                                    //int offset;
+                                    int count = Convert.ToInt32(record.Lenght);
+
+                                    //byte[] array = new byte[count];
+                                    //reader.BaseStream.Position = 0;
+                                    //array = reader.ReadBytes(count);
+                                    //byte[] hash = GetHash(array);
+                                    byte[] hash = GetHash(scanObject1.GetBytes(offset, (int)record.Lenght));
+
                                     if (IsEqualArray(hash, record.Hash))
                                     {
-                                        VirusInfo virus = new VirusInfo(scanObject.Path, record.Name);
+                                        VirusInfo virus = new VirusInfo(scanObject1.Path, record.Name);
+
+
                                         Viruses.Add(virus);
 
-                                        vir.virInfo = virus;
-
+                                        s = 1;
+                                        break;
                                         foreach (var observer in observers)
                                             observer.OnNext(virus);
 
@@ -85,9 +123,25 @@ namespace WpfAV
                         }
                     }
                     offset++;
-                } while (offset <= lenght - 5);
+                } while (offset <= lenght - 5 & s == 0);
             }
-            scanObject.Close();
+            //scanObject1.Close();
+            //reader.Close();
+        }
+
+
+        public void ModifyText(System.Windows.Controls.ListBox myLB)
+        {
+            foreach (var virus in Viruses)
+                myLB.Items.Add(virus.VirusName + "   " + virus.Path);
+        }
+
+        public void disp()
+        {
+            //AVBases.Clear();
+            observers.Clear();
+            Viruses.Clear();
+
         }
 
         public byte[] GetHash(byte[] text)

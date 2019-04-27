@@ -14,23 +14,55 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using System.Security.Cryptography;
-
+using Microsoft.Win32;
+using System.Runtime.Serialization.Formatters.Binary;
+using WinForms = System.Windows.Forms;
+//using System.Windows.Forms;
+using Path = System.IO.Path;
 
 namespace WpfAV
 {
+    
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        public ListBox GETLB()
+        {
+             return LB2; 
+        }
+
+
         public MainWindow()
         {
             InitializeComponent();
         }
 
+
+        
+
+
+        //ListBox SomeProperty
+        //{
+        //    get
+        //    {
+        //        return LB2;
+        //    }
+        //    set
+        //    {
+        //        LB2 = value;
+        //    }
+        //}
+
+
+
+
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            //tb1.Text = "heh";
+            //tb1.Text = "heh"; 
+
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -42,47 +74,132 @@ namespace WpfAV
 
         private void MenuItem_Click_1(object sender, RoutedEventArgs e)
         {
-            add_base addBase = new add_base();
-            addBase.ShowDialog();
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            if (fileDialog.ShowDialog() == true)            //?????????????????????
+            {
+                string fileName = fileDialog.FileName;
+                //TB_filePath.Text = fileName;
+
+                AVBaseReader baseReader = new AVBaseReader(fileName);
+                RecordsDictionary avBase = new RecordsDictionary();
+                if (baseReader.Open())
+                {
+                    AVRecord r = baseReader.GetFirstRecord();
+                    //listBox1.Items.Add(r.Name + "\t" + fileName);
+                    avBase.Add(r);
+                    while ((r = baseReader.GetNextRecord()) != null)
+                    {
+                        avBase.Add(r);
+                        //listBox1.Items.Add(r.Name + "\t" + fileName);
+                    }
+                    baseReader.Close();
+                    engine.AddBase(avBase);
+
+
+                    MessageBox.Show("База добавлена");
+                }
+                else
+                    MessageBox.Show("Ошибка");
+
+            }
+
+
+
+            //add_base addBase = new add_base();
+            //addBase.ShowDialog();
 
         }
 
+
+
+        ScanEngine engine = new ScanEngine();
+
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)
         {
-            string fileName = fileDialog.FileName;
-            textBox_aimFolder.Text = fileName;
 
-            FileFinder finder = new FileFinder(fileName);
-            FilePreparer preparer = new FilePreparer();
-            preparer.Subscribe(finder);
-            ScanEngine scanEngine = new ScanEngine();
-            preparer.Subscribe(scanEngine);
-
-
-
-            string basePath = "MY_BASE.bs";
-            AVBaseReader baseReader = new AVBaseReader(basePath);
-            RecordsDictionary avBase = new RecordsDictionary();
-            if (baseReader.Open())
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            if (fileDialog.ShowDialog() == true)
             {
-                AVRecord r = baseReader.GetFirstRecord();
-                listBox1.Items.Add(r.Name + " " + basePath);
-                avBase.Add(r);
-                while ((r = baseReader.GetNextRecord()) != null)
-                {
-                    avBase.Add(r);
-                    listBox1.Items.Add(r.Name + " " + basePath);
-                }
-                baseReader.Close();
-                scanEngine.AddBase(avBase);
+                string fileName = fileDialog.FileName;
 
-                MessageBox.Show("База добавлена");
+                //-----------------------------------------------------------------------------------
+                FileFinder finder = new FileFinder(fileName);
+                //ScanEngine engine = new ScanEngine();
+                FilePreparer preparer = new FilePreparer();
+                //FileWatcher watcher = new FileWatcher();
+
+                //engine.AddBase(avBase);
+                preparer.Subscribe(engine);
+                finder.AddFile(fileName);
+
+                preparer.Subscribe(finder);
+
+                //finder.Start();
+                //-----------------------------------------------------------------------------------
+                engine.ModifyText(LB2);
+                engine.disp();
+                LB2.Items.Add("----------------");
+
             }
-            else
-                MessageBox.Show("Ошибка");
+
+        }
+
+        private void MenuItem_Click_3(object sender, RoutedEventArgs e)
+        {
+            //VirDetectedWrite VIR1 = new VirDetectedWrite();
+            //VIR1.ModifyText(LB2);
+
+            engine.ModifyText(LB2);
+
+        }
 
 
-            finder.Start();
+
+
+
+        public ListBox GetLB()
+        {
+             return LB2; 
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+            WinForms.FolderBrowserDialog folderBrowser = new WinForms.FolderBrowserDialog();
+
+            WinForms.DialogResult result = folderBrowser.ShowDialog();
+
+            if (!string.IsNullOrWhiteSpace(folderBrowser.SelectedPath))
+            {
+                //string[] files = Directory.GetFiles(folderBrowser.SelectedPath);
+
+                //-----------------------------------------------------------------------------------
+                FileFinder finder = new FileFinder(folderBrowser.SelectedPath);
+                //ScanEngine engine = new ScanEngine();
+                FilePreparer preparer = new FilePreparer();
+
+                //engine.AddBase(avBase);
+                //finder.AddFile(folderBrowser.SelectedPath);
+
+                finder.Start();
+
+                preparer.Subscribe(finder);
+                preparer.Subscribe(engine);
+
+
+
+                //-----------------------------------------------------------------------------------
+                engine.ModifyText(LB2);
+                engine.disp();
+                LB2.Items.Add("----------------");
+
+
+            }
+
+
+
+
 
         }
     }
@@ -90,7 +207,11 @@ namespace WpfAV
 
     public static class vir
     {
-        public static VirusInfo virInfo;
+        
+        public static List<VirusInfo> VirusesForWrite;
+        //public static VirusInfo virInfo;
     }
+
+    
 
 }

@@ -19,6 +19,7 @@ namespace WpfAV
         {
             fullPath = path;
         }
+
         public void Start()
         {
             Thread thread = new Thread(GetAllFiles);
@@ -43,6 +44,12 @@ namespace WpfAV
                     NotifyObservers(filePath);
                 }
             }
+
+            //engine.ModifyText(LB2);
+            //engine.disp();
+            //LB2.Items.Add("----------------");
+
+
         }
     }
 }

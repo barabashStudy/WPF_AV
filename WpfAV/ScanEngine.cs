@@ -110,13 +110,14 @@ namespace WpfAV
                                         VirusInfo virus = new VirusInfo(scanObject1.Path, record.Name);
 
                                         if (!Viruses.Contains(virus))
+                                        {
                                             Viruses.Add(virus);
 
-                                        s = 1;
+                                            s = 1;
 
-                                        foreach (var observer in observers)
-                                            observer.OnNext(virus);
-
+                                            foreach (var observer in observers)
+                                                observer.OnNext(virus);
+                                        }
 
 
                                         //break;

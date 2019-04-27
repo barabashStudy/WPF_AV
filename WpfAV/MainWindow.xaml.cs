@@ -161,7 +161,7 @@ namespace WpfAV
 
                 FileWatcher fileWatcher = new FileWatcher();
 
-                //fileWatcher.Subscribe(finder);
+                preparer.Subscribe(engine);
                 fileWatcher.Subscribe(preparer);
 
                 fileWatcher.AddDirectory(folderBrowser.SelectedPath);

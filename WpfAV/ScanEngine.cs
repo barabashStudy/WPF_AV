@@ -109,13 +109,17 @@ namespace WpfAV
                                     {
                                         VirusInfo virus = new VirusInfo(scanObject1.Path, record.Name);
 
-
-                                        Viruses.Add(virus);
+                                        if (!Viruses.Contains(virus))
+                                            Viruses.Add(virus);
 
                                         s = 1;
-                                        break;
+
                                         foreach (var observer in observers)
                                             observer.OnNext(virus);
+
+
+
+                                        //break;
 
                                     }
                                 }
@@ -124,6 +128,16 @@ namespace WpfAV
                     }
                     offset++;
                 } while (offset <= lenght - 5 & s == 0);
+
+                //observers[0].OnCompleted();
+
+                //if (s == 1)
+                //{
+                //    VirusInfo end = new VirusInfo("completed", "scan");
+                //    foreach (var observer in observers)
+                //        observer.OnNext(end);
+                //}
+
             }
             //scanObject1.Close();
             //reader.Close();
@@ -135,6 +149,10 @@ namespace WpfAV
             foreach (var virus in Viruses)
                 myLB.Items.Add(virus.VirusName + "   " + virus.Path);
         }
+
+
+
+
 
         public void disp()
         {
@@ -181,8 +199,7 @@ namespace WpfAV
         private List<IObserver<VirusInfo>> observers;
         private IObserver<VirusInfo> observer;
 
-        public ScanEngineUnsubscriber(List<IObserver<VirusInfo>> observers,
-                                      IObserver<VirusInfo> observer)
+        public ScanEngineUnsubscriber(List<IObserver<VirusInfo>> observers, IObserver<VirusInfo> observer)
         {
             this.observers = observers;
             this.observer = observer;

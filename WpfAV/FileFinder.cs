@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.IO;
 
-
 namespace WpfAV
 {
     /// <summary>
@@ -32,6 +31,9 @@ namespace WpfAV
                 AddFile(fullPath);
 
                 NotifyObservers(fullPath);
+
+                System.Windows.MessageBox.Show("Сканирование окончено!");
+
             }
             else
             {
@@ -43,7 +45,11 @@ namespace WpfAV
                     AddFile(filePath);
                     NotifyObservers(filePath);
                 }
+
+                System.Windows.MessageBox.Show("Сканирование окончено!");
+
             }
+
 
             //engine.ModifyText(LB2);
             //engine.disp();

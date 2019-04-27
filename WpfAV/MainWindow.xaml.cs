@@ -19,15 +19,17 @@ using System.Runtime.Serialization.Formatters.Binary;
 using WinForms = System.Windows.Forms;
 //using System.Windows.Forms;
 using Path = System.IO.Path;
+using System.Windows.Interop;
 
 namespace WpfAV
 {
-    
+
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window , IObserver<VirusInfo>
     {
+
 
         public ListBox GETLB()
         {
@@ -41,20 +43,26 @@ namespace WpfAV
         }
 
 
-        
 
 
-        //ListBox SomeProperty
-        //{
-        //    get
-        //    {
-        //        return LB2;
-        //    }
-        //    set
-        //    {
-        //        LB2 = value;
-        //    }
-        //}
+        public void OnCompleted()
+        {
+            string curTimeLong = DateTime.Now.ToLongTimeString();
+            Application.Current.Dispatcher.Invoke(new System.Action(() => LB2.Items.Add(curTimeLong + " \t| SCAN COMPLETED" )));
+            //throw new NotImplementedException();
+        }
+
+        public void OnError(Exception error)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnNext(VirusInfo value)
+        {
+
+            string curTimeLong = DateTime.Now.ToLongTimeString();
+            Application.Current.Dispatcher.Invoke(new System.Action(() => LB2.Items.Add(curTimeLong + " \t| " + value.VirusName + " \t| " + value.Path)));
+        }
 
 
 
@@ -113,6 +121,8 @@ namespace WpfAV
 
 
         ScanEngine engine = new ScanEngine();
+        FilePreparer preparer = new FilePreparer();
+
 
         private void MenuItem_Click_2(object sender, RoutedEventArgs e)
         {
@@ -124,21 +134,14 @@ namespace WpfAV
 
                 //-----------------------------------------------------------------------------------
                 FileFinder finder = new FileFinder(fileName);
-                //ScanEngine engine = new ScanEngine();
-                FilePreparer preparer = new FilePreparer();
-                //FileWatcher watcher = new FileWatcher();
+                //FilePreparer preparer = new FilePreparer();
 
-                //engine.AddBase(avBase);
-                preparer.Subscribe(engine);
-                finder.AddFile(fileName);
+                engine.Subscribe(mainW);
+
+                finder.Start();
 
                 preparer.Subscribe(finder);
-
-                //finder.Start();
-                //-----------------------------------------------------------------------------------
-                engine.ModifyText(LB2);
-                engine.disp();
-                LB2.Items.Add("----------------");
+                preparer.Subscribe(engine);
 
             }
 
@@ -146,11 +149,34 @@ namespace WpfAV
 
         private void MenuItem_Click_3(object sender, RoutedEventArgs e)
         {
-            //VirDetectedWrite VIR1 = new VirDetectedWrite();
-            //VIR1.ModifyText(LB2);
+            engine.disp();
 
-            engine.ModifyText(LB2);
+            WinForms.FolderBrowserDialog folderBrowser = new WinForms.FolderBrowserDialog();
 
+            WinForms.DialogResult result = folderBrowser.ShowDialog();
+
+            if (!string.IsNullOrWhiteSpace(folderBrowser.SelectedPath))
+            {
+                engine.Subscribe(mainW);
+
+                FileWatcher fileWatcher = new FileWatcher();
+
+                //fileWatcher.Subscribe(finder);
+                fileWatcher.Subscribe(preparer);
+
+                fileWatcher.AddDirectory(folderBrowser.SelectedPath);
+
+                
+
+                //------------------------------------------------------------
+                //fileWatcher.AddFile()
+                //preparer.Subscribe(fileWatcher);
+                //engine
+                //preparer.Subscribe(finder);
+                //preparer.Subscribe(finder);
+                // preparer.Subscribe(engine);
+                //fileWatcher.Subscribe(engine);
+            }
         }
 
 
@@ -166,39 +192,28 @@ namespace WpfAV
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
+
+        }
+
+        private void MenuItem_Click_4(object sender, RoutedEventArgs e)
+        {
             WinForms.FolderBrowserDialog folderBrowser = new WinForms.FolderBrowserDialog();
 
             WinForms.DialogResult result = folderBrowser.ShowDialog();
 
             if (!string.IsNullOrWhiteSpace(folderBrowser.SelectedPath))
             {
-                //string[] files = Directory.GetFiles(folderBrowser.SelectedPath);
 
-                //-----------------------------------------------------------------------------------
                 FileFinder finder = new FileFinder(folderBrowser.SelectedPath);
-                //ScanEngine engine = new ScanEngine();
                 FilePreparer preparer = new FilePreparer();
 
-                //engine.AddBase(avBase);
-                //finder.AddFile(folderBrowser.SelectedPath);
+                engine.Subscribe(mainW);
 
                 finder.Start();
 
                 preparer.Subscribe(finder);
                 preparer.Subscribe(engine);
-
-
-
-                //-----------------------------------------------------------------------------------
-                engine.ModifyText(LB2);
-                engine.disp();
-                LB2.Items.Add("----------------");
-
-
             }
-
-
-
 
 
         }
@@ -209,6 +224,7 @@ namespace WpfAV
     {
         
         public static List<VirusInfo> VirusesForWrite;
+        //public static 
         //public static VirusInfo virInfo;
     }
 

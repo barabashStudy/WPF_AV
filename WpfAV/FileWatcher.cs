@@ -49,8 +49,7 @@ namespace WpfAV
 
                 AddDirectoryWithoutScan(path);
 
-                string[] dirs = Directory.GetDirectories(path, "*",
-                                                         SearchOption.AllDirectories);
+                string[] dirs = Directory.GetDirectories(path, "*", SearchOption.AllDirectories);
                 foreach (string dir in dirs)
                     AddDirectoryWithoutScan(dir);
                 return true;

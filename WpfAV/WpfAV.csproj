@@ -60,6 +60,7 @@
     <Compile Include="FileObservable.cs" />
     <Compile Include="FilePreparer.cs" />
     <Compile Include="FileWatcher.cs" />
+    <Compile Include="Print_virus.cs" />
     <Compile Include="RecordsDictionary.cs" />
     <Compile Include="ScanEngine.cs" />
     <Compile Include="ScanObject1.cs" />
@@ -111,6 +112,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

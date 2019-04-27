@@ -11,16 +11,11 @@
             <MenuItem Header="Добавить сигнатуру" Height="45" Width="134" Click="MenuItem_Click"/>
             <MenuItem Header="Добавить базу вирусов" Height="45" Width="151" Click="MenuItem_Click_1"/>
             <MenuItem Header="Сканировать" Height="45" Width="92" Click="MenuItem_Click_2"/>
+            <MenuItem Header="Сканировать папку" Height="45" Width="125" Click="MenuItem_Click_4"/>
             <MenuItem x:Name="but1" Header="Добавить папку для мониторинга" Height="45" Width="208" Click="MenuItem_Click_3"/>
         </Menu>
-        <DataGrid Margin="10,77,10,10">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Путь к файлу" Width="80*" />
-                <DataGridTextColumn Header="Название вируса" Width="20*"/>
-            </DataGrid.Columns>
-        </DataGrid>
         <Label Content="Обнаруженные вирусы:" Margin="10,50,553,0" VerticalAlignment="Top"/>
-        <ListBox x:Name="LB2" HorizontalAlignment="Left" Height="164" Margin="83,129,0,0" VerticalAlignment="Top" Width="625"/>
+        <ListBox x:Name="LB2" HorizontalAlignment="Left" Height="327" Margin="10,82,0,0" VerticalAlignment="Top" Width="772"/>
         <Button Content="scan fold" HorizontalAlignment="Left" Margin="297,57,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
 
     </Grid>

@@ -42,51 +42,6 @@ namespace WpfAV
 
         public void OnNext(string path)
         {
-            //string fileName = Path.GetFileName(path);
-            //Mutex mutex = new Mutex(false, 'M' + fileName);
-            //mutex.WaitOne();
-            //var mmFile = MemoryMappedFile.CreateFromFile(path, FileMode.Open, fileName, 0);
-            //var fileAccessor = mmFile.CreateViewAccessor();
-
-            //uint offsetPE = fileAccessor.ReadUInt32(60);
-            //if (offsetPE <= fileAccessor.Capacity)
-            //{
-            //    byte[] signature = new byte[4];
-            //    fileAccessor.ReadArray(offsetPE, signature, 0, 4);
-            //    if (Encoding.ASCII.GetString(signature) == "PE\0\0")
-            //    {
-            //        ushort magic = fileAccessor.ReadUInt16(offsetPE + 24);
-            //        uint PEHeaderSize;
-            //        if (magic == 267)
-            //            PEHeaderSize = 248;
-            //        else  //PE32+ = 523
-            //            PEHeaderSize = 264;
-            //        ushort numberOfSection = fileAccessor.ReadUInt16(offsetPE + 6);
-            //        uint firstSection = offsetPE + PEHeaderSize;
-            //        for (int i = 0; i < numberOfSection; i++)
-            //        {
-            //            long currentSection = firstSection + i * 40;
-            //            uint characteristics = fileAccessor.ReadUInt32(currentSection + 36);
-            //            uint flag = 0x20000000;
-            //            if ((characteristics & flag) == flag)
-            //            {
-            //                uint lenght = fileAccessor.ReadUInt32(currentSection + 16);
-            //                uint start = fileAccessor.ReadUInt32(currentSection + 20);
-            //                var sectionAccessor = mmFile.CreateViewAccessor(start, lenght, MemoryMappedFileAccess.Read);
-            //                ScanObject1 obj = new ScanObject1(sectionAccessor, mmFile, path);
-
-
-            //                objects.Add(obj);
-            //                foreach (var observer in observers)
-            //                    observer.OnNext(obj);
-            //            }
-            //        }
-            //    }
-            //}
-            //fileAccessor.Flush();
-            //fileAccessor.Dispose();
-            //mmFile.Dispose();
-            //mutex.ReleaseMutex();
 
             //---------------------------------------------
             string fileName = Path.GetFileName(path);
